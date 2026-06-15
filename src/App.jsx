@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 
-/* ═══════════════════════════════════════════════════════════════
+/*
    AGENT DEFINITION
    System prompt = agent persona + domain knowledge + decision logic
-═══════════════════════════════════════════════════════════════ */
+*/
 const AGENT = `You are Lishe, an expert Kenyan nutrition advisor powered by Claude AI.
 "Lishe" means nutrition in Swahili.
 
@@ -39,9 +39,7 @@ Hard rules:
 - ## headers for detailed plan sections
 - Keep it warm and clear, never clinical`;
 
-/* ═══════════════════════════════════════════════════════════════
-   MARKDOWN RENDERER — singular component for all AI text
-═══════════════════════════════════════════════════════════════ */
+/* MARKDOWN RENDERER */
 function MD({ text }) {
   const inline = (s) =>
     s
@@ -118,9 +116,7 @@ function MD({ text }) {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN COMPONENT
-═══════════════════════════════════════════════════════════════ */
+/* MAIN COMPONENT */
 export default function LisheAI() {
   const GREETING =
     "Habari! 👋 Mimi ni **Lishe** — mshauri wako wa lishe.\n\n" +
@@ -128,7 +124,7 @@ export default function LisheAI() {
     "I'm powered by Claude AI and I know my Kenyan foods — from **ugali** to **pilau** to everything in between.\n\n" +
     "What brings you here today? Tell me your goal or challenge and let's get into it. 🥗";
 
-  /* SESSION — full conversation history sent to the API on every call.
+  /* SESSION:full conversation history sent to the API on every call.
      OpenRouter (OpenAI format) uses plain strings for content,
      not arrays like the Anthropic API. */
   const [session, setSession] = useState([]);
@@ -166,8 +162,7 @@ export default function LisheAI() {
         body: JSON.stringify({
           /* OpenRouter uses OpenAI-compatible format:
              - system goes as first item inside messages[]
-             - no separate "system" field like Anthropic API
-             - no "thinking" parameter (not supported via OpenRouter) */
+           */
           model: "gemini-2.5-flash",
           max_tokens: 1024,
           messages: [{ role: "system", content: AGENT }, ...nextSess],
@@ -177,9 +172,7 @@ export default function LisheAI() {
       const d = await r.json();
       if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
 
-      /* OpenRouter returns OpenAI format:
-         d.choices[0].message.content — plain string
-         (Anthropic direct returns d.content — array of blocks) */
+      
       const reply = d.choices[0].message.content;
 
       /* Save assistant reply as plain string in session */
@@ -220,7 +213,7 @@ export default function LisheAI() {
         fontFamily: '"Inter",system-ui,sans-serif',
       }}
     >
-      {/* ── HEADER ─────────────────────────────────────────── */}
+      {/*HEADER */}
       <header
         style={{
           display: "flex",
@@ -302,7 +295,7 @@ export default function LisheAI() {
         </div>
       </header>
 
-      {/* ── MESSAGES ───────────────────────────────────────── */}
+      {/* MESSAGES */}
       <main
         style={{
           flex: 1,
@@ -424,7 +417,7 @@ export default function LisheAI() {
         <div ref={bottomRef} />
       </main>
 
-      {/* ── INPUT ──────────────────────────────────────────── */}
+      {/*  INPUT */}
       <footer
         style={{
           padding: "9px 12px 13px",
