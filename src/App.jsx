@@ -121,11 +121,11 @@ export default function LisheAI() {
   const GREETING =
     "Habari! 👋 Mimi ni **Lishe** — mshauri wako wa lishe.\n\n" +
     '"Lishe" means nutrition in Swahili, and that\'s exactly what I do. ' +
-    "I'm powered by Claude AI and I know my Kenyan foods — from **ugali** to **pilau** to everything in between.\n\n" +
+    "I'm powered by Gemini AI and I know my Kenyan foods — from **ugali** to **pilau** to everything in between.\n\n" +
     "What brings you here today? Tell me your goal or challenge and let's get into it. 🥗";
 
   /* SESSION:full conversation history sent to the API on every call.
-     OpenRouter (OpenAI format) uses plain strings for content,
+     Gemini uses plain strings for content,
      not arrays like the Anthropic API. */
   const [session, setSession] = useState([]);
   const [msgs, setMsgs] = useState([{ role: "ai", text: GREETING }]);
@@ -160,9 +160,6 @@ export default function LisheAI() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          /* OpenRouter uses OpenAI-compatible format:
-             - system goes as first item inside messages[]
-           */
           model: "gemini-2.5-flash",
           max_tokens: 1024,
           messages: [{ role: "system", content: AGENT }, ...nextSess],
@@ -260,7 +257,6 @@ export default function LisheAI() {
                 marginLeft: 7,
               }}
             >
-              v2 · OpenRouter
             </span>
           </div>
           <div style={{ fontSize: 10.5, color: "#4caf50" }}>
